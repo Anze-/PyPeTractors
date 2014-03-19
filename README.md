@@ -28,9 +28,10 @@ http://stackoverflow.com/questions/19779217/need-help-solving-a-second-order-non
 
 http://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html
 
+3d plot example:
 
 
-    3d plot example:
+
     from mpl_toolkits.mplot3d import Axes3D
     import numpy as np
     import matplotlib
