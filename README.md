@@ -3,6 +3,8 @@ PyPeTractors
 
 Physics modeling of pendulum with three magnetic attractors in a gravity field in Python(mostly).
 
+Denomination: Py[thon]Pe[ndulum][@]Tractors
+
 Sources
 --------------
 Look at that crazy atrtactor:
