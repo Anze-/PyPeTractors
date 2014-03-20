@@ -112,18 +112,18 @@ p_drop(10,-10)
 solve_oed()
 asint()
 elapsed = time() - start
-plot()
+#plot()
 
 import Image
 
-img_q=40
+img_q=160
 img = Image.new( 'RGB', (img_q,img_q), "black") # create a new black image
 pixels = img.load() # create the pixel map
 t_ext = (elapsed*img_q*img_q*np.pi)/(4.0*60.0) #extimed total time in minutes
 print "It will take about "+str(t_ext)+" minutes"
 _=raw_input("press ENTER to proceed..")
 
-
+start = time()
 i_row=0
 while i_row < img_q:
     i_col=0
@@ -134,13 +134,19 @@ while i_row < img_q:
             pixels[i_col, i_row]=asint()
         else:
             pixels[i_col, i_row]=(255,255,255)
-	percent=i_row+i_col/float(100)
+	percent=100*(i_row+i_col/float(100))/float(D)
     	print str(percent)+" %"
         i_col=i_col+1
     i_row=i_row+1
 
-img.show()
-img.save("magnetic_pendulum_map.bmp")
+t.real = (time()-start)/60
+#img.show()
+img.save("magnetic_pendulum_map_1.bmp")
+
+print"Time extimed (in minutes): "
+print t_ext
+print"Time elapsed (in minutes): "
+print t_real
 
 """
 
