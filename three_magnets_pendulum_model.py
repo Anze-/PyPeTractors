@@ -11,6 +11,7 @@ from scipy.integrate import odeint
 from matplotlib.pylab import *
 from math import *
 from mpl_toolkits.mplot3d import Axes3D
+from time import time
 
 
 def p_drop(x_drop, y_drop):
@@ -19,8 +20,8 @@ def p_drop(x_drop, y_drop):
     R=.01		 #friction
     C=1*1e-2	 #gravity lin. approx. self restoring force
     Q=3*1e1	 #magnetic approx. charge force
-    D=100	 #length of the pendulum
-    r=30	 #distance of the magnets from the centre. (!smaller than d)
+    D=40	 #length of the pendulum
+    r=30	 #distance of the magnets from the centre. (!smaller than D)
     class a(object):
         pass
     class b(object):
@@ -63,14 +64,14 @@ def d(s,t):
     s[2]])
 
 def solve_oed():
-    global sol_x,sol_y,d,s,t
-    tmax = 100
+    global sol_x,sol_y,d,s,t, dt, tmax
+    tmax = 150
     dt = .05
     t = np.linspace(0, tmax, num=np.round(tmax/dt)+1)
     _,sol_x,_,sol_y = odeint(d, s, t).T
 
 def plot():
-    global fig, ax, i, cStep, fft_axes
+    global fig, ax, i, cStep, fft_axes, tmax
     fig = plt.figure()
     ax = Axes3D(fig)
     i=0
@@ -79,10 +80,10 @@ def plot():
         i
         ax.plot(xs=sol_x[i:i+cStep], ys=sol_y[i:i+cStep], zs=t[i:i+cStep],  color=plt.cm.jet(0.2+7*(np.sqrt(t.tolist()[i])/max(t.tolist()))))
         i=i+cStep-1
-    ax.scatter(a.x,a.y,100, color=a.color, marker='.')
-    ax.scatter(b.x,b.y,100, color=b.color, marker='.')
-    ax.scatter(c.x,c.y,100, color=c.color, marker='.')
-    ax.scatter(0, 0, 100, marker='.')
+    ax.scatter(a.x,a.y, tmax, color=a.color, marker='.')
+    ax.scatter(b.x,b.y, tmax, color=b.color, marker='.')
+    ax.scatter(c.x,c.y, tmax, color=c.color, marker='.')
+    ax.scatter(0, 0, tmax, marker='.')
     xlim([-35,35])
     ylim([-35,35])
     plt.show()
@@ -97,17 +98,60 @@ def asint():
     objs=np.array([a, b, c])
     dists=np.array([a.dist, b.dist, c.dist])
     closer = objs[np.where( dists == dists.min())[0][0]]
-    print "The reached point is "+closer.name
-    print "The associated color is "+closer.color
-    return closer.color
+    #print "The reached point is "+closer.name
+    #print "The associated color is "+closer.color
+    if closer.color=='r':
+        return (255,0,0)
+    elif closer.color=='g':
+        return (0,255,0)
+    elif closer.color=='b':
+        return (0,0,255)
 
-p_drop(30,0 )
+start = time()
+p_drop(10,-10)
 solve_oed()
-plot()
 asint()
+elapsed = time() - start
+#plot()
+
+import Image
+
+img_q=160
+img = Image.new( 'RGB', (img_q,img_q), "black") # create a new black image
+pixels = img.load() # create the pixel map
+t_ext = (elapsed*img_q*img_q*np.pi)/(4.0*60.0) #extimed total time in minutes
+print "It will take about "+str(t_ext)+" minutes"
+_=raw_input("press ENTER to proceed..")
+
+start = time()
+i_row=0
+while i_row < img_q:
+    i_col=0
+    while i_col < img_q:
+        if np.sqrt(np.power(D*((-img_q/2)+i_row)/img_q,2)+np.power(D*((-img_q/2)+i_col)/img_q,2))<D/2 :
+            p_drop(D*((-img_q/2)+i_col)/img_q,D*((-img_q/2)+i_row)/img_q)
+            solve_oed()
+            pixels[i_col, i_row]=asint()
+        else:
+            pixels[i_col, i_row]=(255,255,255)
+	percent=100*(i_row+i_col/float(100))/float(D)
+    	print str(percent)+" %"
+        i_col=i_col+1
+    i_row=i_row+1
+
+t.real = (time()-start)/60
+#img.show()
+img.save("magnetic_pendulum_map_1.bmp")
+
+print"Time extimed (in minutes): "
+print t_ext
+print"Time elapsed (in minutes): "
+print t_real
+
+"""
 
 
-"""MORE PLOTTING
+MORE PLOTTING
 sol = odeint(d, s, t)
 plt.plot(t, sol, label='lol')
 plt.legend()

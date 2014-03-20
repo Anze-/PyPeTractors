@@ -1,28 +1,28 @@
-PyPeTractors
-============
+#PyPeTractors
+
 
 Physics modeling of pendulum with three magnetic attractors in a gravity field in Python(mostly).
 
 Denomination: Py[thon]Pe[ndulum][@]Tractors; read 'pie p ~~at~~ tractors'.
 
-Sources
---------------
-Look at that crazy atrtactor:
+##Sources
+
+######Look at that crazy atrtactor:
 
 http://en.wikipedia.org/wiki/Attractor
 
-Here are some infos:
+######Here are some infos:
 
 http://bugman123.com/Fractals/index.html
 
-Now, are they just approximating a magnetic force using a linear equation? Seriously?... yep...:
+######Now, are they just approximating a magnetic force using a linear equation? Seriously?... yep...:
 
 http://www.codeproject.com/Articles/16166/The-magnetic-pendulum-fractal#idOverview
 
-Getting started:
---------------
+##Getting started:
 
-Python differential equations:
+
+######Python differential equations:
 
 http://www.space-kerala.org/freeelectron/wp-content/uploads/2013/11/PythonScientific-simple.pdf
 
@@ -58,3 +58,15 @@ Fixed axes example fro stackowerflow:
     fft = scipy.fft(rawsignal)
     fft_axes.plot(abs(fft))
     pylab.show()
+    
+    
+    
+##CREDITS & LICENSING
+
+Author: Alberto Anzellotti
+
+Co-Author: Giovanni Pederiva
+
+Citations would be appreciated! : - ) Thanks.
+
+ALL CONTENT RELEASED UNDER MIT LICENCE -  MORE @ http://anze.mit-license.org
