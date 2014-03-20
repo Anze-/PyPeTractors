@@ -69,4 +69,4 @@ Co-Author: Giovanni Pederiva
 
 Citations would be appreciated! : - ) Thanks.
 
-ALL CONTENT RELEASED UNDEER MIT LICENCE -  MORE @ http://anze.mit-license.org
+ALL CONTENT RELEASED UNDER MIT LICENCE -  MORE @ http://anze.mit-license.org
