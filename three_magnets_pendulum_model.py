@@ -4,8 +4,6 @@
 #co-Author: Giovanni Pederiva
 #citation would be appreciated :) thanks and good coding!
 
-# initial conditions: x(t_0) y(t_0) t_0 attractors_x=[x1, x2, x3] attractors_y=[y1, y2, y3]
-
 import numpy as np
 from scipy.integrate import odeint
 from matplotlib.pylab import *
@@ -13,33 +11,37 @@ from math import *
 from mpl_toolkits.mplot3d import Axes3D
 from time import time
 
+#pendulum_drop static vars
+R=.01		 #friction
+C=1*1e-2	 #gravity lin. approx. self restoring force
+Q=3*1e1	 #magnetic approx. charge force
+D=40	 #length of the pendulum
+r=30	 #distance of the magnets from the centre. (!smaller than D)
+class a(object):
+    pass
+
+class b(object):
+    pass
+
+class c(object):
+    pass
+
+a.name="a"
+b.name="b"
+c.name="c"
+a.color="r"
+b.color="g"
+c.color="b"
+c.x=0	 #north point
+c.y=r
+b.x = c.x * (-0.49999999999999978) - ( c.y * 0.86602540378443871) #south-east point
+b.y = c.x * 0.86602540378443871 + ( c.y * (-0.49999999999999978))
+a.x = c.x *(-0.50000000000000044) - ( c.y * (-0.86602540378443837)) #south-west point
+a.y = c.x * (-0.86602540378443837) + ( c.y * (-0.50000000000000044))
 
 def p_drop(x_drop, y_drop):
     #standard model constants
     global R, C, Q, D, r, s, a, b, c
-    R=.01		 #friction
-    C=1*1e-2	 #gravity lin. approx. self restoring force
-    Q=3*1e1	 #magnetic approx. charge force
-    D=40	 #length of the pendulum
-    r=30	 #distance of the magnets from the centre. (!smaller than D)
-    class a(object):
-        pass
-    class b(object):
-        pass
-    class c(object):
-        pass
-    a.name="a"
-    b.name="b"
-    c.name="c"
-    a.color="r"
-    b.color="g"
-    c.color="b"
-    c.x=0	 #north point
-    c.y=r
-    b.x = c.x * (-0.49999999999999978) - ( c.y * 0.86602540378443871) #south-east point
-    b.y = c.x * 0.86602540378443871 + ( c.y * (-0.49999999999999978))
-    a.x = c.x *(-0.50000000000000044) - ( c.y * (-0.86602540378443837)) #south-west point
-    a.y = c.x * (-0.86602540378443837) + ( c.y * (-0.50000000000000044))
     #initial conditions
     s = np.array([
     0,# x'(t_0)
@@ -49,13 +51,6 @@ def p_drop(x_drop, y_drop):
     ])
 
 
-def d_backup(s,t):
-    return np.array([
-    -R*s[0] - C*s[1] + Q* ((a.x-s[1])/np.power(np.power(a.x-s[1],2)+np.power(a.y-s[3],2)+D*D,3/2)+ (b.x-s[1])/np.power(np.power(b.x-s[1],2)+np.power(b.y-s[3],2)+D*D,3/2)+ (c.x-s[1])/np.power(np.power(c.x-s[1],2)+np.power(c.y-s[3],2)+D*D,3/2)),
-    s[0],
-    -R*s[2] - C*s[3] + Q*( (a.y-s[3])/np.power(np.power(a.x-s[1],2)+np.power(a.y-s[3],2)+D*D,3/2)+ (b.y-s[3])/np.power(np.power(b.x-s[1],2)+np.power(b.y-s[3],2)+D*D,3/2)+ (c.y-s[3])/np.power(np.power(c.x-s[1],2)+np.power(c.y-s[3],2)+D*D,3/2) ),
-    s[2]])
-
 def d(s,t):
     return np.array([
     -R*s[0] - C*s[1] + Q* ((a.x-s[1])/np.power(np.power(a.x-s[1],2)+np.power(a.y-s[3],2)+1e-12,3/2)+ (b.x-s[1])/np.power(np.power(b.x-s[1],2)+np.power(b.y-s[3],2)+1e-12,3/2)+ (c.x-s[1])/np.power(np.power(c.x-s[1],2)+np.power(c.y-s[3],2)+1e-12,3/2)),
@@ -63,10 +58,12 @@ def d(s,t):
     -R*s[2] - C*s[3] + Q*( (a.y-s[3])/np.power(np.power(a.x-s[1],2)+np.power(a.y-s[3],2)+1e-12,3/2)+ (b.y-s[3])/np.power(np.power(b.x-s[1],2)+np.power(b.y-s[3],2)+1e-12,3/2)+ (c.y-s[3])/np.power(np.power(c.x-s[1],2)+np.power(c.y-s[3],2)+1e-12,3/2) ),
     s[2]])
 
+
+#solve_oed static vars
+tmax = 150
+dt = .05
 def solve_oed():
     global sol_x,sol_y,d,s,t, dt, tmax
-    tmax = 150
-    dt = .05
     t = np.linspace(0, tmax, num=np.round(tmax/dt)+1)
     _,sol_x,_,sol_y = odeint(d, s, t).T
 
@@ -134,14 +131,14 @@ while i_row < img_q:
             pixels[i_col, i_row]=asint()
         else:
             pixels[i_col, i_row]=(255,255,255)
-	percent=100*(i_row+i_col/float(100))/float(D)
+	percent=100*(i_row+i_col/float(100))/float(img_q)
     	print str(percent)+" %"
         i_col=i_col+1
+    img.save("magnetic_pendulum_map_160x160.bmp")
     i_row=i_row+1
 
 t.real = (time()-start)/60
-#img.show()
-img.save("magnetic_pendulum_map_1.bmp")
+img.show()
 
 print"Time extimed (in minutes): "
 print t_ext
@@ -169,4 +166,13 @@ show()
 plt.plot(t, sol_y, label='X,Y dinamics')
 plt.legend()
 show()
+
+
+def d_backup(s,t):
+    return np.array([
+    -R*s[0] - C*s[1] + Q* ((a.x-s[1])/np.power(np.power(a.x-s[1],2)+np.power(a.y-s[3],2)+D*D,3/2)+ (b.x-s[1])/np.power(np.power(b.x-s[1],2)+np.power(b.y-s[3],2)+D*D,3/2)+ (c.x-s[1])/np.power(np.power(c.x-s[1],2)+np.power(c.y-s[3],2)+D*D,3/2)),
+    s[0],
+    -R*s[2] - C*s[3] + Q*( (a.y-s[3])/np.power(np.power(a.x-s[1],2)+np.power(a.y-s[3],2)+D*D,3/2)+ (b.y-s[3])/np.power(np.power(b.x-s[1],2)+np.power(b.y-s[3],2)+D*D,3/2)+ (c.y-s[3])/np.power(np.power(c.x-s[1],2)+np.power(c.y-s[3],2)+D*D,3/2) ),
+    s[2]])
+
 """
