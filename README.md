@@ -13,9 +13,32 @@ In a future we might wrap this whole package in a GUI software with related prec
 ####Well did you ask how is it faster?
 We have computed the mean value of over 100 times measure of the same integration with the same resolution, the same pendulum model and the same  initial conditions using the same laptop CPU forcing the max speed to 80% so that the performance was the same. Obtaining a very little variance we measured that python took about 3 sec per integration, while C++ with the odeint library (still with no CUDA) took about 350 ms, which is almost 10 times faster.
 
+![cpp looks faster](/plots/cpp_looks_faster.png)
+
+
+##Plots
+
+Up to now have plotted some trajecories:
+
+![trajectory side view](/plots/magnetic_pendulum_1a.png)
+x,y on the floor, time on the z, 3 attractors -> (r,g,b) dots, pendulum pin -> black dot
+![trajectory top view](/plots/magnetic_pendulum_1b.png)
+
+
+...and some maps:
+
+![160x160 map](/plots/magnetic_pendulum_map_160x160.bmp)
+to each initial position (x,y) of the picture is associated the color of the attractor reached by the pendulum
+![40x40 map](/plots/magnetic_pendulum_map_40x40.bmp)
+
+
+using Python.
+
+We will hopefully achive better results in the maps using C++, CUDA and more processing time.
+
 ##Sources
 
-######Look at that crazy atrtactor:
+######Look at that crazy attractor:
 
 http://en.wikipedia.org/wiki/Attractor
 
