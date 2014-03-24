@@ -28,8 +28,9 @@ x,y on the floor, time on the z, 3 attractors -> (r,g,b) dots, pendulum pin -> b
 
 ... and some maps:
 
-![160x160 map](/plots/magnetic_pendulum_map_160x160.bmp)
 to each initial position (x,y) of the picture is associated the color of the attractor reached by the pendulum
+
+![160x160 map](/plots/magnetic_pendulum_map_160x160.bmp)
 ![40x40 map](/plots/magnetic_pendulum_RGB_map_40x40.bmp)
 
 
