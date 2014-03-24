@@ -5,6 +5,14 @@ Physics modeling of pendulum with three magnetic attractors in a gravity field i
 
 Denomination: Py[thon]Pe[ndulum][@]Tractors; read 'pie p ~~at~~ tractors'.
 
+##NEWS
+It looks like the odeint libraries for python are not the most efficent to solve a large number of differential equations (for a big set of initial conditions), moreover they are not develped to be vectorialized (and we would love to impoement GPU computing to create better-resolution pictures in a shorter time). This is why we have decided to use python with SciPy libraries to do the plots of the trajectories etc. while using C++ to create the map of the asintotic values given different initial condition, and we will probably script also a vectorialized CUDA script C++ script.
+
+In a future we might wrap this whole package in a GUI software with related precompiled bins and/or exes.
+
+####Well did you ask how is it faster?
+We have computed the mean value of over 100 times measure of the same integration with the same resolution, the same pendulum model and the same  initial conditions using the same laptop CPU forcing the max speed to 80% so that the performance was the same. Obtaining a very little variance we measured that python took about 3 sec per integration, while C++ with the odeint library (still with no CUDA) took about 350 ms, which is almost 10 times faster.
+
 ##Sources
 
 ######Look at that crazy atrtactor:
