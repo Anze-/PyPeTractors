@@ -21,18 +21,19 @@ We have computed the mean value of over 100 times measure of the same integratio
 Up to now have plotted some trajecories:
 
 ![trajectory side view](/plots/magnetic_pendulum_1a.png)
+
 x,y on the floor, time on the z, 3 attractors -> (r,g,b) dots, pendulum pin -> black dot
 ![trajectory top view](/plots/magnetic_pendulum_1b.png)
 
 
-...and some maps:
+... and some maps:
 
 ![160x160 map](/plots/magnetic_pendulum_map_160x160.bmp)
 to each initial position (x,y) of the picture is associated the color of the attractor reached by the pendulum
-![40x40 map](/plots/magnetic_pendulum_map_40x40.bmp)
+![40x40 map](/plots/magnetic_pendulum_RGB_map_40x40.bmp)
 
 
-using Python.
+... using Python.
 
 We will hopefully achive better results in the maps using C++, CUDA and more processing time.
 
