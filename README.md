@@ -11,8 +11,7 @@ It looks like the odeint libraries for python are not the most efficent ones to 
 In a future we might wrap this whole package in a GUI software with related precompiled bins and/or exes.
 
 ####Wanna know how much is it faster?
-We have computed the mean value of over 100 times measure of the same integration with the same resolution, the same pendulum model and the same  initial conditions using the same laptop CPU forcing the max speed to 80% so that the performance was the same. Obtaining a very little variance we measured that python took about 3 sec per integration, while C++ with the odeint library (still with no CUDA) took about 350 ms, which is almost 10 times faster.
-
+We have computed the mean value of over 100 times measure of the same integration with the same resolution, the same pendulum model and the same  initial conditions using the same laptop CPU forcing the max speed to 80% so that the performance was the same. Obtaining a very little variance we measured that python took about 3 sec per integration, while C++ with the odeint library (still with no CUDA) took about 350 ms, which is almost 10 times faster. Without printing to screen it's right under 10 ms per integration (300x faster)!
 ![cpp looks faster](/plots/cpp_looks_faster.png)
 
 
