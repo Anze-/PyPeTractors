@@ -57,7 +57,7 @@ double x_drop,y_drop; 		//empty x_drop and y_drop
 //time static vars
 const double s_time = 0;		//start time
 const double e_time = 150;		//end time
-const double d_time = .05;	//delta time  (time interval) !must return an integer when e_time/d_time is called
+const double d_time = 0.05;	//delta time  (time interval) !must return an integer when e_time/d_time is called
 
 double out[(int)(e_time/d_time)][3];
 
@@ -71,7 +71,7 @@ attr a,b,c;
 
 char * a_color = "255   0   0   ";
 char * b_color = "  0 255   0   ";
-char * c_color = "  0 255   0   ";
+char * c_color = "  0   0 255   ";
 
 void setup(){
 c.x=0;
@@ -96,10 +96,10 @@ s[3] = y_drop;// y (t_0)
 
 void mag_pend( const state_type &s_i, state_type &s_d , double /* t */ )
 {
-    s_d[0] = -R*s_d[0] - C*s_d[1] + Q* ((a.x-s_d[1])/pow(pow(a.x-s_d[1],2)+pow(a.y-s_d[3],2)+1e-12,1.5)+ (b.x-s_d[1])/pow(pow(b.x-s_d[1],2)+pow(b.y-s_d[3],2)+1e-12,1.5)+ (c.x-s_d[1])/pow(pow(c.x-s_d[1],2.0)+pow(c.y-s_d[3],2)+1e-12,1.5));
-    s_d[1] = s_d[0];
-    s_d[2] = -R*s_d[2] - C*s_d[3] + Q*( (a.y-s_d[3])/pow(pow(a.x-s_d[1],2)+pow(a.y-s_d[3],2)+1e-12,1.5)+ (b.y-s_d[3])/pow(pow(b.x-s_d[1],2)+pow(b.y-s_d[3],2)+1e-12,1.5)+ (c.y-s_d[3])/pow(pow(c.x-s_d[1],2)+pow(c.y-s_d[3],2)+1e-12,1.5) );
-    s_d[3] = s_d[2];
+    s_d[0] = -R*s_i[0] - C*s_i[1] + Q* ((a.x-s_i[1])/pow(pow(a.x-s_i[1],2)+pow(a.y-s_i[3],2)+1e-12,1.5)+ (b.x-s_i[1])/pow(pow(b.x-s_i[1],2)+pow(b.y-s_i[3],2)+1e-12,1.5)+ (c.x-s_i[1])/pow(pow(c.x-s_i[1],2.0)+pow(c.y-s_i[3],2)+1e-12,1.5));
+    s_d[1] = s_i[0];
+    s_d[2] = -R*s_i[2] - C*s_i[3] + Q*( (a.y-s_i[3])/pow(pow(a.x-s_i[1],2)+pow(a.y-s_i[3],2)+1e-12,1.5)+ (b.y-s_i[3])/pow(pow(b.x-s_i[1],2)+pow(b.y-s_i[3],2)+1e-12,1.5)+ (c.y-s_i[3])/pow(pow(c.x-s_i[1],2)+pow(c.y-s_i[3],2)+1e-12,1.5) );
+    s_d[3] = s_i[2];
 }
 
 //to display data while proceeding
@@ -125,8 +125,13 @@ char * asint(double (*data_matrix)[3]){
     c.dist=pow(pow(l_x-c.x,2)+pow(l_y-c.y,2),0.5);
     char * colors[3];colors[0]=a_color;colors[1]=b_color;colors[2]=c_color;
     double dists[3]={a.dist, b.dist, c.dist};
+    int s_index=SEId(dists, 3);
     //cout << a.dist << " " << b.dist << " " << c.dist << endl;
-    return colors[SEId(dists, 3)];
+    if (dists[s_index]<D/3.0){
+	return colors[s_index];
+    }else{
+	return "  0   0   0   ";
+    }
 }
 
 int main(int argc, char **argv)
@@ -157,7 +162,7 @@ int main(int argc, char **argv)
     cout << "press ENTER to map . . ." <<endl;
     cin.ignore(1);
 
-    double img_d=1; //image density, 1 means 1 pixel for unit of the D (wich is the radius of the sphere of the pendulum)
+    double img_d=3; //image density, 1 means 1 pixel for unit of the D (wich is the radius of the sphere of the pendulum)
     int img_s = (int)(img_d*2*D);
 
     FILE * map_file;
