@@ -6,11 +6,13 @@ co-Author: Giovanni Pederiva
 citation would be appreciated :) thanks and good coding!
 */
 
-
-
 #include <iostream>
+#include <stdio.h>
 #include <math.h>
 #include <chrono>
+#include <array>
+#include <cstring>
+#include <algorithm>
 #include <boost/array.hpp>
 #include <boost/numeric/odeint.hpp>
 
@@ -29,6 +31,19 @@ using namespace boost::numeric::odeint;
 #define STOP_TIMER
 #endif
 
+int SEId(double array[], int size)
+{
+    int index = 0;
+
+    for(int i = 1; i < size; i++)
+    {
+        if(array[i] < array[index])
+            index = i;              
+    }
+
+    return index;
+}
+
 
 
 //pendulum_drop static vars
@@ -42,15 +57,21 @@ double x_drop,y_drop; 		//empty x_drop and y_drop
 //time static vars
 const double s_time = 0;		//start time
 const double e_time = 150;		//end time
-const double d_time = .05;	//delta time  (time interval)
+const double d_time = .05;	//delta time  (time interval) !must return an integer when e_time/d_time is called
+
+double out[(int)(e_time/d_time)][3];
 
 struct attr{
-int x;
-int y;
-int color[3];
+double x;
+double y;
+double dist;
 };
 
 attr a,b,c;
+
+char * a_color = "255   0   0   ";
+char * b_color = "  0 255   0   ";
+char * c_color = "  0 255   0   ";
 
 void setup(){
 c.x=0;
@@ -75,31 +96,95 @@ s[3] = y_drop;// y (t_0)
 
 void mag_pend( const state_type &s_i, state_type &s_d , double /* t */ )
 {
-    s_d[0] = -R*s_d[0] - C*s_d[1] + Q* ((a.x-s_d[1])/pow(pow(a.x-s_d[1],2)+pow(a.y-s_d[3],2)+1e-12,3/2)+ (b.x-s_d[1])/pow(pow(b.x-s_d[1],2)+pow(b.y-s_d[3],2)+1e-12,3/2)+ (c.x-s_d[1])/pow(pow(c.x-s_d[1],2)+pow(c.y-s_d[3],2)+1e-12,3/2));
+    s_d[0] = -R*s_d[0] - C*s_d[1] + Q* ((a.x-s_d[1])/pow(pow(a.x-s_d[1],2)+pow(a.y-s_d[3],2)+1e-12,1.5)+ (b.x-s_d[1])/pow(pow(b.x-s_d[1],2)+pow(b.y-s_d[3],2)+1e-12,1.5)+ (c.x-s_d[1])/pow(pow(c.x-s_d[1],2.0)+pow(c.y-s_d[3],2)+1e-12,1.5));
     s_d[1] = s_d[0];
-    s_d[2] = -R*s_d[2] - C*s_d[3] + Q*( (a.y-s_d[3])/pow(pow(a.x-s_d[1],2)+pow(a.y-s_d[3],2)+1e-12,3/2)+ (b.y-s_d[3])/pow(pow(b.x-s_d[1],2)+pow(b.y-s_d[3],2)+1e-12,3/2)+ (c.y-s_d[3])/pow(pow(c.x-s_d[1],2)+pow(c.y-s_d[3],2)+1e-12,3/2) );
+    s_d[2] = -R*s_d[2] - C*s_d[3] + Q*( (a.y-s_d[3])/pow(pow(a.x-s_d[1],2)+pow(a.y-s_d[3],2)+1e-12,1.5)+ (b.y-s_d[3])/pow(pow(b.x-s_d[1],2)+pow(b.y-s_d[3],2)+1e-12,1.5)+ (c.y-s_d[3])/pow(pow(c.x-s_d[1],2)+pow(c.y-s_d[3],2)+1e-12,1.5) );
     s_d[3] = s_d[2];
 }
 
-
+//to display data while proceeding
 void write_observer( const state_type &s_i , const double t )
 {
     cout << t << '\t' << "| \t" << s_i[0] << '\t' << s_i[1] << '\t' << s_i[2] << '\t' << s_i[3] << endl;
 }
 
+//to save data to a n x 3 matrix
+void save_observer( const state_type &s_i , const double t )
+{
+    out[(int)(t/d_time)][0]=t; out[(int)(t/d_time)][1]=s_i[1]; out[(int)(t/d_time)][2]=s_i[3];
+}
+
+char * asint(double (*data_matrix)[3]){
+    double l_x=out[(int)(e_time/d_time)-1][1];
+    double l_y=out[(int)(e_time/d_time)-1][2];
+    //cout << a.x << " " << b.x << " " << c.x << endl;
+    //cout << a.y << " " << b.y << " " << c.y << endl;
+    //cout << l_x << " and " << l_y << endl;
+    a.dist=pow(pow(l_x-a.x,2)+pow(l_y-a.y,2),0.5);
+    b.dist=pow(pow(l_x-b.x,2)+pow(l_y-b.y,2),0.5);
+    c.dist=pow(pow(l_x-c.x,2)+pow(l_y-c.y,2),0.5);
+    char * colors[3];colors[0]=a_color;colors[1]=b_color;colors[2]=c_color;
+    double dists[3]={a.dist, b.dist, c.dist};
+    //cout << a.dist << " " << b.dist << " " << c.dist << endl;
+    return colors[SEId(dists, 3)];
+}
 
 int main(int argc, char **argv)
 {
     setup();
-    double x_=10;
-    double y_=-10;
+    double x_=-15;
+    double y_=-5;
     drop(x_,y_);
     INIT_TIMER;
     START_TIMER
-    integrate_const(euler< state_type >(), mag_pend , s , s_time , e_time , d_time , write_observer ); // note 1
+    integrate_const(euler< state_type >(), mag_pend , s , s_time , e_time , d_time , save_observer ); // note 1
     STOP_TIMER
-}
+    int i=0;
+    //printf("%d",(int)(e_time/d_time));
+    /*
+    while(i<(int)(e_time/d_time)){
+	cout << out[i][0] << '\t' << "| \t" << out[i][1] << '\t' << out[i][2] << endl;
+	i++;
+    }
+    */
+    cout << asint(out) << endl;
+    //printf("last X: %f",out[(int)(e_time/d_time)-1][1]);
+    //printf("last Y: %f\n",out[(int)(e_time/d_time)-1][2]);
 
+
+    //write out the picture
+
+    cout << "press ENTER to map . . ." <<endl;
+    cin.ignore(1);
+
+    double img_d=1; //image density, 1 means 1 pixel for unit of the D (wich is the radius of the sphere of the pendulum)
+    int img_s = (int)(img_d*2*D);
+
+    FILE * map_file;
+    map_file=fopen("map.ppm", "w+");
+    fprintf(map_file, "P3\n%d %d\n255\n", img_s, img_s);
+    fclose(map_file);
+    map_file=fopen("map.ppm", "a");
+
+    i = 0;
+    while(i<img_s){
+	int j=0;
+	double y_pos=-D+(i/img_d);
+	while(j<img_s){
+		double x_pos=-D+(j/img_d);
+		setup();
+		drop(x_pos,y_pos);
+		integrate_const(euler< state_type >(), mag_pend , s , s_time , e_time , d_time , save_observer );
+		fprintf(map_file, "%s",asint(out));
+		j++;
+	}
+	fprintf(map_file, "\n");
+	cout << i << endl;
+	i++;
+    }
+    fclose(map_file);
+
+}
 
 /*			################     NOTES     ###################
 
@@ -120,6 +205,13 @@ Rosenbrock 4	rosenbrock4	Solver for stiff systems with error control and dense o
 Symplectic Euler	symplectic_euler	Basic symplectic solver for separable Hamiltonian system
 Symplectic RKN McLachlan	symplectic_rkn_sb3a_mclachlan	Symplectic solver for separable Hamiltonian system with order 6
 
+2)ppm picture declaration (Wikipedia):
+P3
+# The P3 means colors are in ASCII, then 3 columns and 2 rows,
+# then 255 for max color, then RGB triplets
+3 2
+255
+255   0   0     0 255   0     0   0 255
+
 
 */
-
