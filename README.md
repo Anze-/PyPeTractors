@@ -37,7 +37,7 @@ to each initial position (x,y) of the picture is associated the color of the att
 ![40x40 map](/plots/150.png)
 ![40x40 map](/plots/240.png)
 
-We will hopefully achive better results in the maps using C++, CUDA and more processing time.
+We will hopefully achive better results in the maps using CUDA (Thrust) and more processing time.
 
 ##Sources
 
