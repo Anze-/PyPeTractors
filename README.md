@@ -31,6 +31,9 @@ to each initial position (x,y) of the picture is associated the color of the att
 
 ![160x160 map](/plots/magnetic_pendulum_map_160x160.bmp)
 ![40x40 map](/plots/magnetic_pendulum_RGB_map_40x40.bmp)
+![40x40 map](/plots/m_p_240x240_euler_significance.png)
+![40x40 map](/plots/150.png)
+![40x40 map](/plots/240.png)
 
 
 ... using Python.
