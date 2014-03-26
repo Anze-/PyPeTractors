@@ -1,8 +1,7 @@
 /*
 Magnetic pendulum model solving nonlinear second order differential equations
 Code released under MIT LICENCE - more @ http://anze.mit-license.org/
-Author: Alberto Anzellotti
-co-Author: Giovanni Pederiva
+Authors: Alberto Anzellotti Giovanni Pederiva
 citation would be appreciated :) thanks and good coding!
 */
 

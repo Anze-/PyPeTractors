@@ -1,3 +1,10 @@
+/*
+Magnetic pendulum model solving nonlinear second order differential equations
+Code released under MIT LICENCE - more @ http://anze.mit-license.org/
+Authors: Alberto Anzellotti Giovanni Pederiva
+citation would be appreciated :) thanks and good coding!
+*/
+
 #include <iostream>
 #include <boost/array.hpp>
 #include <boost/numeric/odeint.hpp>
