@@ -98,9 +98,7 @@ Fixed axes example fro stackowerflow:
     
 ##CREDITS & LICENSING
 
-Author: Alberto Anzellotti
-
-Co-Author: Giovanni Pederiva
+Authors: Alberto Anzellotti and Giovanni Pederiva
 
 Citations would be appreciated! : - ) Thanks.
 
