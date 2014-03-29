@@ -6,6 +6,8 @@ Physics modeling of pendulum with three magnetic attractors in a gravity field i
 Denomination: Py[thon]Pe[ndulum][@]Tractors; read 'pie p ~~at~~ tractors'.
 
 ##NEWS
+Developing GUI python program, up to now trajectories are working, still to complete options handles and to solve gauge progressbar update issue. Still to implement maps.
+
 It looks like the odeint libraries for python are not the most efficent ones to solve a large number of differential equations (for a big set of initial conditions), moreover they are not develped to be vectorialized (and we would love to impoement GPU computing to create better-resolution pictures in a shorter time). This is why we have decided to use python with SciPy libraries to do the plots of the trajectories etc. while using C++ to create the map of the asintotic values given different initial condition, and we will probably script also a vectorialized CUDA script C++ script.
 
 In a future we might wrap this whole package in a GUI software with related precompiled bins and/or exes.
