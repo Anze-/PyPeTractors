@@ -57,8 +57,22 @@ http://www.codeproject.com/Articles/16166/The-magnetic-pendulum-fractal#idOvervi
 
 ##Getting started:
 
+###### OpenMP/MPI
+http://wiki.csi.cuny.edu/cunyhpc/index.php/MPI,_MPI_Parallel_Program_Compilation,_and_PBS_Batch_Job_Submission
 
-######Python differential equations:
+http://www.clusterconnection.com/2009/08/comparing-mpi-and-openmp/
+
+http://www.linux-mag.com/id/5759/
+
+http://www.linux-mag.com/id/4609/
+
+http://cms.mpi.univie.ac.at/wiki/index.php/Hybrid_openMPI/openMP_parallelization
+
+http://www.princeton.edu/researchcomputing/faq/how-to-use-openmpi-with-o/
+
+
+
+###### Python differential equations:
 
 http://www.space-kerala.org/freeelectron/wp-content/uploads/2013/11/PythonScientific-simple.pdf
 
