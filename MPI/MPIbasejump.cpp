@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
-#include "doTheMath.cpp"
+#include "@function@"
 
 #include <fstream>
 using namespace std;
@@ -45,12 +45,12 @@ i++;
    if(rank <= (img_s%slaves))
    {
     int slice=rank+i*slaves;
-doTheMath(slice);
+    doTheMath(slice);
    }
    MPI_Finalize();
     if ( rank == 0)
     {
-        std::cout << "Master core: " << processor_name << " : " << rank <<"\n";
+        std::cout << "Master core: " << processor_name << " : " << rank << " : END" <<"\n";
 // printf("%d",i);
 // ofstream myfile;
 // myfile.open("200");

@@ -12,14 +12,14 @@ using namespace std;
 using namespace boost::numeric::odeint;
 
 
-#define R 0.01
-#define C 0.01
-#define Q 30
-#define r 30
+#define R @R@
+#define C @C@
+#define Q @Q@
+#define r @r@
 
-#define img_d 1.0
+#define img_d @img_d@
 #define img_s (int)(img_d*2*D)
-#define D 40
+#define D @D@
 
 
 

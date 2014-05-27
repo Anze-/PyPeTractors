@@ -1,0 +1,5 @@
+## HOWTO
+
+To execute the makefile open it, set the options, execute:PC@shell$ python3 makefile.py
+
+will output
