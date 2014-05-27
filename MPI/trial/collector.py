@@ -15,7 +15,7 @@ picture = open(pname , 'w+')
 picture.close()
 picture = open(pname, 'a')
 picture.write("P3 \n")
-size=str(len(files))
+size=str(len(files)-1)
 picture.write(size+" "+size+" 1 \n")
 for file in files:
 	part = open(file, "r")
@@ -24,4 +24,3 @@ for file in files:
 	#os.remove(file) #remove when debugging
 
 picture.close()
-	
