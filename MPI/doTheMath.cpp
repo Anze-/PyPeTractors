@@ -17,12 +17,11 @@ using namespace boost::numeric::odeint;
 #define Q 30
 #define r 30
 
+#define img_d 1.0
+#define img_s (int)(img_d*2*D)
+#define D 40
 
 
-//image static vars
-#define D 40 		  //distance from center of the img
-#define img_d 1.0    //image density, 1 means 1 pixel for unit of the D (wich is the radius of the sphere of the pendulum)
-#define img_s (int)(img_d*2*D) //number of pixels
 
 #define N_ITER 35    //number of iterations for asintotic point
 
@@ -31,7 +30,7 @@ const double s_time = 0.0;	//start time
 const double e_time = 1000.0;	//end time
 const double d_time = 0.05;	//delta time (time interval)
 
-char mat[img_s];
+
 
 typedef vector< double > state_type;
 
@@ -67,12 +66,12 @@ void p_drop()
 
 
 
-void mag_pend( const state_type &s_i, state_type &s_d , double  t  )
+void tractors( const state_type &x , state_type &dxdt , double  )
 {
-	s_d[0] = -R*s_i[0] - C*s_i[1] + Q* ((a.x-s_i[1])/pow(pow(a.x-s_i[1],2)+pow(a.y-s_i[3],2)+1e-12,3/2)+ (b.x-s_i[1])/pow(pow(b.x-s_i[1],2)+pow(b.y-s_i[3],2)+1e-12,3/2)+ (c.x-s_i[1])/pow(pow(c.x-s_i[1],2)+pow(c.y-s_i[3],2)+1e-12,3/2));
-	s_d[1] = s_i[0];	
-	s_d[2] = -R*s_i[2] - C*s_i[3] + Q*( (a.y-s_i[3])/pow(pow(a.x-s_i[1],2)+pow(a.y-s_i[3],2)+1e-12,3/2)+ (b.y-s_i[3])/pow(pow(b.x-s_i[1],2)+pow(b.y-s_i[3],2)+1e-12,3/2)+ (c.y-s_i[3])/pow(pow(c.x-s_i[1],2)+pow(c.y-s_i[3],2)+1e-12,3/2) );
-	s_d[3] = s_i[2];
+    dxdt[0] = -R*x[0] - C*x[1] + Q * ((a.x-x[1])/pow(pow(a.x-x[1],2)+pow(a.y-x[3],2)+0.00000000000001,3/2)+ (b.x-x[1])/pow(pow(b.x-x[1],2)+pow(b.y-x[3],2)+1e-12,3/2)+ (c.x-x[1])/pow(pow(c.x-x[1],2)+pow(c.y-x[3],2)+1e-12,3/2));
+    dxdt[1] = x[0];
+    dxdt[2] = -R*x[2] - C*x[3] + Q*( (a.y-x[3])/pow(pow(a.x-x[1],2)+pow(a.y-x[3],2)+0.00000000000001,3/2)+ (b.y-x[3])/pow(pow(b.x-x[1],2)+pow(b.y-x[3],2)+1e-12,3/2)+ (c.y-x[3])/pow(pow(c.x-x[1],2)+pow(c.y-x[3],2)+1e-12,3/2));
+    dxdt[3] = x[2];
 }
 
 void asint_checker(const state_type &x , const double t ){}
@@ -87,11 +86,12 @@ void doTheMath(int row)
 	int i_col, i_iter,rep;
 
 	char flag;
-	char c[10];
-	sprintf(c, "%d", row);
+	char row_string[10];
+	sprintf(row_string, "%d", row);
 	FILE * output;
-	output = fopen(c, "w+");
+	output = fopen(row_string, "w+");
 
+	char mat[1000000];
 
 	for(i_col = 0; i_col < img_s / 2; i_col++)
 	{
