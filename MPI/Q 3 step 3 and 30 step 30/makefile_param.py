@@ -69,24 +69,38 @@ D_placeholder="@D@"
 mpi_f_placeholder="@function@"
 
 ##### Build 1 :: ...description...
-f_build="f1.cpp"
-mpi_build="mpi1.cpp"
 
-mpi_c="mpi1.o"
-c_names.append(mpi_c)
 
 R="0.01"
 r="30"
 C="0.01"
-Q="30"
+Q="3"
 img_d="1.0"
 D="40"
 
-build()
 
 
-##### Build 2 ...
+while float(Q) < 30:
+	f_build="f"+Q+".cpp"
+	mpi_build="mpi"+Q+".cpp"
 
+	mpi_c="mpi"+Q+".o"
+	c_names.append(mpi_c)
+	build()
+	a = float(Q) + 3
+	Q = str(a)
+
+Q="30"
+
+while float(Q) < 300:
+	f_build="f"+Q+".cpp"
+	mpi_build="mpi"+Q+".cpp"
+
+	mpi_c="mpi"+Q+".o"
+	c_names.append(mpi_c)
+	build()
+	a = float(Q) + 30
+	Q = str(a)
 
 ##### WRITE OUT BASH LAUNCHER
 NODES=4
@@ -97,16 +111,9 @@ launcher.close()
 launcher = open("launcher.sh" , "a")
 launcher.write("""
 #!/bin/sh \n
-#PBS -V \n
-#PBS -N mag_pendulum_job \n
-#PBS -l nodes="""+str(NODES)+""" \n
-#PBS -l alberto.anzellotti=10:00:00 \n
-#PBS -m bea \n
-#PBS -M alberto.anzellotti@science.unitn.it \n
-cd $PBS_O_WORKDIR \n
 """)
 for step in c_names:
-	launcher.write("/usr/local/bin/mpirun -np "+str(NODES)+" /home/alberto.anzellotti/"+step+"\n")
+	launcher.write("mpirun -np 8 ./"+step+"\n")
 	launcher.write("python3 collector.py \n")
 
 launcher.close()
