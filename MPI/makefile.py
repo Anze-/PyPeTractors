@@ -1,8 +1,14 @@
 import fileinput
 import shutil
 import subprocess
+import os
+import uuid
 
+#build_ref=str(uuid.uuid4)
+#os.mkdir(build_ref)
+#os.chdir(build_ref)
 
+c_names=[]
 
 def build():
     global all
@@ -67,6 +73,7 @@ f_build="f1.cpp"
 mpi_build="mpi1.cpp"
 
 mpi_c="mpi1.o"
+c_names.append(mpi_c)
 
 R="0.01"
 r="30"
@@ -77,4 +84,29 @@ D="40"
 
 build()
 
+
 ##### Build 2 ...
+
+
+##### WRITE OUT BASH LAUNCHER
+NODES=4
+
+
+launcher = open("launcher.sh" , "w+")
+launcher.close()
+launcher = open("launcher.sh" , "a")
+launcher.write("""
+#!/bin/sh \n
+#PBS -V \n
+#PBS -N mag_pendulum_job \n
+#PBS -l nodes="""+str(NODES)+""" \n
+#PBS -l alberto.anzellotti=10:00:00 \n
+#PBS -m bea \n
+#PBS -M alberto.anzellotti@science.unitn.it \n
+cd $PBS_O_WORKDIR \n
+""")
+for step in c_names:
+	launcher.write("/usr/local/bin/mpirun -np "+str(NODES)+" /home/alberto.anzellotti/"+step+"\n")
+	launcher.write("python collector.py \n")
+
+launcher.close()
