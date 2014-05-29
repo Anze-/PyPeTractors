@@ -1,6 +1,7 @@
 import glob
 import os
 import uuid
+import time
 #os.chdir("/mydir")
 nums=[]
 files=[]
@@ -10,7 +11,7 @@ nums.sort()
 for num in nums:
 	files.append(str(num)+".pp")
 print (files)
-pname=str(uuid.uuid4())+".ppm"
+pname=str(time.time())+"__"+str(uuid.uuid4())+".ppm"
 picture = open(pname , 'w+')
 picture.close()
 picture = open(pname, 'a')
