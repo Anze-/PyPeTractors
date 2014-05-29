@@ -50,7 +50,7 @@ i++;
    MPI_Finalize();
     if ( rank == 0)
     {
-        std::cout << "Master core: " << processor_name << " : " << rank << " : END" <<"\n";
+        std::cout << "Master core: " << processor_name << " : " << rank << "@function@ : END" <<"\n";
 // printf("%d",i);
 // ofstream myfile;
 // myfile.open("200");
