@@ -4,7 +4,6 @@
 #include <math.h>
 #include <stdio.h>
 #include <chrono>
-#include <omp.h>
 
 #define CHUNKSIZE 1
 
