@@ -44,8 +44,7 @@ def build():
         print line.replace(mpi_f_placeholder, f_build),
 
     #compile new mpic++
-    local_odeint="/home/alberto.anzellotti/odeint/odeint-v2-master/include"
-    p = subprocess.Popen('mpic++ '+mpi_build+" -o "+mpi_c+" -std=c++11 -I "+local_odeint, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    p = subprocess.Popen('mpic++ '+mpi_build+" -o "+mpi_c+" -std=c++11", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for line in p.stdout.readlines():
         print line
 
